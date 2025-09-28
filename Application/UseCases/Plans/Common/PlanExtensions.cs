@@ -9,6 +9,8 @@ public static class PlanExtensions
         return new PlanResult(
             plan.Id,
             plan.Name,
-            plan.Description);
+            plan.Description,
+            plan.TypeOfTraining,
+            plan.PhysicalCondition);
     }
 }

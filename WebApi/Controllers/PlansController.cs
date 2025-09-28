@@ -30,13 +30,17 @@ public class PlansController : ApiController
 
     public record PlanCreateRequest(
         string Name,
-        string? Description
+        string? Description,
+        TypeOfTraining TypeOfTraining,
+        PhysicalCondition PhysicalCondition
     );
 
     public record PlanUpdateRequest(
         Guid Id,
         string Name,
-        string? Description
+        string? Description,
+        TypeOfTraining TypeOfTraining,
+        PhysicalCondition PhysicalCondition
     );
 
     [HttpGet]
@@ -63,7 +67,9 @@ public class PlansController : ApiController
     {
         var command = new CreatePlanCommand(
             request.Name,
-            request.Description
+            request.Description,
+            request.TypeOfTraining,
+            request.PhysicalCondition
         );
 
         var result = await _mediator.Send(command);
@@ -77,7 +83,9 @@ public class PlansController : ApiController
         var command = new UpdatePlanCommand(
             request.Id,
             request.Name,
-            request.Description
+            request.Description,
+            request.TypeOfTraining,
+            request.PhysicalCondition
         );
 
         var result = await _mediator.Send(command);

@@ -1,5 +1,4 @@
 using Application.Interfaces.Repositories;
-using Application.UseCases.Exercises.Commands.Update;
 using Domain.Common.Errors;
 using Domain.Entities;
 using ErrorOr;
@@ -29,6 +28,8 @@ public class UpdatePlanCommandHandler : IRequestHandler<UpdatePlanCommand, Error
 
         plan.Name = command.Name;
         plan.Description = command.Description;
+        plan.TypeOfTraining = command.TypeOfTraining;
+        plan.PhysicalCondition = command.PhysicalCondition;
         plan.UpdateDate = DateTime.UtcNow;
 
         await _repository.UpdateAsync(plan);

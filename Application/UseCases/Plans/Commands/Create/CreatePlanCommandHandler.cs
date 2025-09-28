@@ -20,7 +20,9 @@ public class CreatePlanCommandHandler : IRequestHandler<CreatePlanCommand, Error
         var plan = new Plan
         {
             Name = command.Name,
-            Description = command.Description
+            Description = command.Description,
+            PhysicalCondition = command.PhysicalCondition,
+            TypeOfTraining = command.TypeOfTraining,
         };
         
         await _repository.InsertAsync(plan);
