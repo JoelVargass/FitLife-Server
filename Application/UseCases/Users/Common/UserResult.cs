@@ -1,3 +1,5 @@
+using Domain.Entities;
+
 namespace Application.UseCases.Users.Common;
 
 public record UserResult(
@@ -5,6 +7,9 @@ public record UserResult(
     string Name,
     string FirstLastName,
     string? SecondLastName,
-    string Email
+    string Email,
+    Genre? Genre,
+    decimal? Weight,
+    decimal? Height
     //string RoleName,
     );

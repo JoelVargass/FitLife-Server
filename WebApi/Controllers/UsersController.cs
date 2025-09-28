@@ -42,7 +42,10 @@ public class UsersController : ApiController
         string FirstLastName,
         string SecondLastName,
         string Email,
-        string Password
+        string Password,
+        Genre? Genre,
+        decimal? Height,
+        decimal? Weight
         //Guid RoleId,
         );
 
@@ -50,7 +53,10 @@ public class UsersController : ApiController
         Guid Id,
         string Name,
         string FirstLastName,
-        string? SecondLastName);
+        string? SecondLastName,
+        Genre? Genre,
+        decimal? Weight,
+        decimal? Height);
 
     public record UserUpdateRequest(
         Guid Id,
@@ -58,7 +64,10 @@ public class UsersController : ApiController
         string FirstLastName,
         string SecondLastName,
         string Email,
-        string Password
+        string Password,
+        Genre? Genre,
+        decimal? Height,
+        decimal? Weight
         //Guid RoleId
         );
 
@@ -83,7 +92,7 @@ public class UsersController : ApiController
     public async Task<IActionResult> CreateUser(UserCreateRequest request)
     {
         var command = new CreateUserCommand(request.Name, request.FirstLastName, request.SecondLastName,
-            request.Email, request.Password);
+            request.Email, request.Password, request.Genre, request.Height, request.Weight);
         var result = await _mediator.Send(command);
 
         return result.Match(_ => Ok(), Problem);
@@ -93,7 +102,7 @@ public class UsersController : ApiController
     public async Task<IActionResult> UpdateUser(UserUpdateRequest request)
     {
         var command = new UpdateUserCommand(request.Id, request.Name, request.FirstLastName, request.SecondLastName,
-            request.Email, request.Password);
+            request.Email, request.Password, request.Genre, request.Height, request.Weight);
         var result = await _mediator.Send(command);
 
         return result.Match(
@@ -109,7 +118,14 @@ public class UsersController : ApiController
         if (userId != request.Id)
             return Problem(Errors.Authentication.NotAuthorized);
 
-        var command = new UpdateProfileCommand(request.Id, request.Name, request.FirstLastName, request.SecondLastName);
+        var command = new UpdateProfileCommand(
+            request.Id, 
+            request.Name, 
+            request.FirstLastName, 
+            request.SecondLastName, 
+            request.Genre, 
+            request.Weight, 
+            request.Height);
 
         var result = await _mediator.Send(command);
 

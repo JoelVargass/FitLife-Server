@@ -8,6 +8,5 @@ public class ListUsersQueryValidator : AbstractValidator<ListUsersQuery>
     {
         RuleFor(x => x.Page)
             .GreaterThanOrEqualTo(1).WithMessage("La página debe ser mayor o igual a 1.");
-
     }
 }

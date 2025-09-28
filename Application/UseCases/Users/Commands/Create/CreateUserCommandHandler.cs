@@ -36,6 +36,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Error
             SecondLastName = command.SecondLastName,
             Email = command.Email,
             Password = command.Password,
+            Genre= command.Genre,
+            Weight = command.Weight,
+            Height = command.Height
             //RoleId = command.RoleId,
         };
         

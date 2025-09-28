@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928172424_AddTypeAndConditionToPlans")]
-    partial class AddTypeAndConditionToPlans
+    [Migration("20250928182820_AddExtraInformationOfUsers")]
+    partial class AddExtraInformationOfUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,6 +182,12 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("Genre")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Height")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -200,6 +206,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("Id");
 

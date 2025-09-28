@@ -11,17 +11,14 @@ public static partial class Errors
 
         public static Error NotFound =>
             Error.NotFound(code: "User.UserNotFound", description: "Usuario no encontrado");
-
-        public static Error NotBelongToInstitution =>
-            Error.Forbidden(code: "User.NotBelongToInstitution",
-                description: "El usuario no pertenece a la institución");
         
         public static Error ExternalAuthenticationConflict =>
             Error.Conflict(code: "User.ExternalAuthenticationConflict",
                 description: "El usuario se registrado con otro método de autenticación");
-        
-        public static Error GroupNotAssigned =>
-            Error.Validation("User.GroupNotAssigned", "El usuario no tiene un grupo asignado.");
+        public static Error InvalidHeight =>
+            Error.Validation("User.InvalidHeight", "La altura proporcionada no es válida. Debe ser un número positivo con hasta 2 decimales.");
 
+        public static Error InvalidWeight =>
+            Error.Validation("User.InvalidWeight", "El peso proporcionado no es válido. Debe ser un número positivo con hasta 2 decimales.");
     }
 }
