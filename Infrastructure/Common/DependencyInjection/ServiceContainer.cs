@@ -26,6 +26,7 @@ public static class ServiceContainer
         // Repositorios
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IExerciseRepository, ExerciseRepository>();
         //services.AddScoped<IRoleRepository, RoleRepository>();
 
         // Servicios
