@@ -63,7 +63,7 @@ public class ExerciseController : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateExercise(ExerciseCreateRequest request)
+    public async Task<IActionResult> CreateExercise([FromBody] ExerciseCreateRequest request)
     {
         var command = new CreateExerciseCommand(
             request.Name,

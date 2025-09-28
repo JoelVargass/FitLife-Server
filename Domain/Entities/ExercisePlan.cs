@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class PlanExercise
+public class ExercisePlan
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -10,7 +10,7 @@ public class PlanExercise
     public Guid ExerciseId { get; set; }
     public Exercise Exercise { get; set; } = null!;
 
-    public string DayOfWeek { get; set; } = null!; // Lunes, Martes, etc.
+    public DayOfWeek DayOfWeek { get; set; }
     public int? Series { get; set; }
     public int? Repetitions { get; set; }
 

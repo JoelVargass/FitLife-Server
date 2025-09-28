@@ -24,4 +24,9 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\ExercisePlans\Commands\Delete\" />
+      <Folder Include="UseCases\ExercisePlans\Commands\Update\" />
+    </ItemGroup>
+
 </Project>
