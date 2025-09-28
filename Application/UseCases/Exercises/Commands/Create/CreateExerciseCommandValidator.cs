@@ -14,7 +14,7 @@ public class CreateExerciseCommandValidator : AbstractValidator<CreateExerciseCo
             .MaximumLength(150).WithMessage("La descripción no debe exceder los 150 caracteres.");
 
         RuleFor(x => x.MuscleType)
-            .MaximumLength(50).WithMessage("El.");
+            .IsInEnum().WithMessage("Debe especificar un tipo de músculo válido.");
 
         RuleFor(x => x.Duration)
             .MaximumLength(50).WithMessage("Debe proporcionar un valor válido.");

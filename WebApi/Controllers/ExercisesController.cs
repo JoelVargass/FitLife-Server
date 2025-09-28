@@ -30,7 +30,7 @@ public class ExerciseController : ApiController
 
     public record ExerciseCreateRequest(
         string Name,
-        string? MuscleType,
+        MuscleType MuscleType,
         string? Description,
         string? Duration
     );
@@ -38,7 +38,7 @@ public class ExerciseController : ApiController
     public record ExerciseUpdateRequest(
         Guid Id,
         string Name,
-        string? MuscleType,
+        MuscleType MuscleType,
         string? Description,
         string? Duration
     );

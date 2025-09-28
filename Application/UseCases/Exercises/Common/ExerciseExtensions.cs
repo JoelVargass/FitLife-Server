@@ -9,7 +9,7 @@ public static class ExerciseExtensions
         return new ExerciseResult(
             exercise.Id,
             exercise.Name,
-            exercise.MuscleType,
+            exercise.MuscleType.ToString(),
             exercise.Description,
             exercise.Duration
             );

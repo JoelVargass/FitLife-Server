@@ -6,7 +6,7 @@ public class Exercise
     
     public required string Name { get; set; }
     
-    public string? MuscleType { get; set; }
+    public MuscleType MuscleType { get; set; } = MuscleType.Other;
     
     public string? Description { get; set; }
     
@@ -20,3 +20,15 @@ public class Exercise
     public DateTime? DeleteDate { get; set; }
 }
 
+public enum MuscleType
+{
+Chest,
+Back,
+Legs,
+Shoulders,
+Biceps,
+Triceps,
+Abs,
+FullBody,
+Other
+}

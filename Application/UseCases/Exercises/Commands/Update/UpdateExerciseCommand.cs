@@ -1,3 +1,4 @@
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
@@ -6,7 +7,7 @@ namespace Application.UseCases.Exercises.Commands.Update;
 public record UpdateExerciseCommand(
     Guid Id,
     string Name,
-    string? MuscleType,
+    MuscleType MuscleType,
     string? Description,
     string? Duration
     ) : IRequest<ErrorOr<Updated>>;
