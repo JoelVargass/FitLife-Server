@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928183604_AddPlanRelationToUsers")]
+    partial class AddPlanRelationToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,12 +134,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Plans");
                 });
@@ -200,6 +198,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
+                    b.Property<Guid?>("PlanId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("RecoveryToken")
                         .HasColumnType("longtext");
 
@@ -214,6 +215,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PlanId");
+
                     b.ToTable("Users");
                 });
 
@@ -226,7 +229,7 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Plan", "Plan")
-                        .WithMany("ExercisePlans")
+                        .WithMany()
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -234,17 +237,6 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Exercise");
 
                     b.Navigation("Plan");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Plan", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "User")
-                        .WithMany("Plans")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
@@ -258,14 +250,13 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Plan", b =>
-                {
-                    b.Navigation("ExercisePlans");
-                });
-
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.Navigation("Plans");
+                    b.HasOne("Domain.Entities.Plan", "Plan")
+                        .WithMany()
+                        .HasForeignKey("PlanId");
+
+                    b.Navigation("Plan");
                 });
 #pragma warning restore 612, 618
         }
