@@ -8,5 +8,6 @@ public record CreatePlanCommand(
     string Name,
     string? Description,
     TypeOfTraining TypeOfTraining,
-    PhysicalCondition PhysicalCondition
+    PhysicalCondition PhysicalCondition,
+    Guid UserId
     ) : IRequest<ErrorOr<Created>>;

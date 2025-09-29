@@ -8,5 +8,6 @@ public record CreateExerciseCommand(
     string Name,
     MuscleType MuscleType,
     string? Description,
-    string? Duration
+    string? Duration,
+    Guid UserId
     ) : IRequest<ErrorOr<Created>>;

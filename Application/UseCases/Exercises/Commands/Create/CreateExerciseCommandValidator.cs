@@ -18,5 +18,8 @@ public class CreateExerciseCommandValidator : AbstractValidator<CreateExerciseCo
 
         RuleFor(x => x.Duration)
             .MaximumLength(50).WithMessage("Debe proporcionar un valor válido.");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty().WithMessage("El usuario es obligatorio.");
     }
 }

@@ -6,6 +6,7 @@ using MediatR;
 namespace Application.UseCases.Exercises.Queries.ListExercises;
 
 public record ListExercisesQuery(
+    Guid UserId,
     int Page = 1, 
     int PageSize = 10, 
     string? Name = null

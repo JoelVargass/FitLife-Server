@@ -23,6 +23,7 @@ public class CreatePlanCommandHandler : IRequestHandler<CreatePlanCommand, Error
             Description = command.Description,
             PhysicalCondition = command.PhysicalCondition,
             TypeOfTraining = command.TypeOfTraining,
+            UserId = command.UserId 
         };
         
         await _repository.InsertAsync(plan);

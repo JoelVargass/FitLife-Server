@@ -10,6 +10,8 @@ public class Exercise
     
     public string? Description { get; set; }
     
+    public Guid UserId { get; set; }
+    public User User { get; set; }
     public string? Duration { get; set; }
     
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;

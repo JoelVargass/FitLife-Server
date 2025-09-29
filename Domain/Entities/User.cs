@@ -12,7 +12,8 @@ public class User
     public decimal? Weight { get; set; }
     public decimal? Height { get; set; }
     
-    //public List<Plan> Plans { get; set; } = new();
+    public List<Plan> Plans { get; set; } = [];
+
     public string? RecoveryToken { get; set; }
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     public DateTime? UpdateDate { get; set; }

@@ -46,11 +46,24 @@ public class PlansController : ApiController
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] ListPlansRequest request)
     {
-        var query = new ListPlansQuery(request.Page, request.PageSize, request.Search);
+        var userIdClaim = User.FindFirst("id") ?? User.FindFirst("nameid");
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized("No se pudo obtener el UserId del token.");
+        }
+
+        var query = new ListPlansQuery(
+            UserId: userId,
+            Page: request.Page,
+            PageSize: request.PageSize,
+            Name: request.Search
+        );
+
         var result = await _mediator.Send(query);
 
         return result.Match(Ok, Problem);
     }
+
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetPlan(Guid id)
@@ -65,17 +78,27 @@ public class PlansController : ApiController
     [HttpPost]
     public async Task<IActionResult> CreatePlan(PlanCreateRequest request)
     {
+        var userIdClaim = User.FindFirst("id") ?? User.FindFirst("nameid");
+
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized("No se pudo obtener el UserId del token.");
+        }
+
         var command = new CreatePlanCommand(
             request.Name,
             request.Description,
             request.TypeOfTraining,
-            request.PhysicalCondition
+            request.PhysicalCondition,
+            userId
         );
 
         var result = await _mediator.Send(command);
 
-        return result.Match(_ => Ok(), Problem);
+        return result.Match(_ => Ok("Plan creado correctamente"), Problem);
     }
+
+
 
     [HttpPut]
     public async Task<IActionResult> UpdatePlan(PlanUpdateRequest request)

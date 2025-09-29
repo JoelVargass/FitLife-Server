@@ -12,5 +12,8 @@ public class CreatePlanCommandValidator : AbstractValidator<CreatePlanCommand>
 
         RuleFor(x => x.Description)
             .MaximumLength(150).WithMessage("La descripción no debe exceder los 150 caracteres.");
+
+        RuleFor(x => x.UserId)
+            .NotEmpty().WithMessage("El usuario es obligatorio.");
     }
 }

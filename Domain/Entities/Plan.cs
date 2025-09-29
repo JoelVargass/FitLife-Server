@@ -9,11 +9,11 @@ public class Plan
     public required TypeOfTraining TypeOfTraining { get; set; }
     
     public required PhysicalCondition PhysicalCondition { get; set; }
-    /*
+    
     public Guid UserId { get; set; }
     public User User { get; set; }
     public List<ExercisePlan> ExercisePlans { get; set; } = new();
-    */
+    
     public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     public DateTime? UpdateDate { get; set; }
     public bool IsDeleted { get; set; }

@@ -46,7 +46,17 @@ public class ExerciseController : ApiController
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] ListExercisesRequest request)
     {
-        var query = new ListExercisesQuery(request.Page, request.PageSize, request.Search);
+        var userIdClaim = User.FindFirst("id") ?? User.FindFirst("nameid");
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized("No se pudo obtener el UserId del token.");
+        }
+        
+        var query = new ListExercisesQuery(
+            UserId: userId,
+            request.Page, 
+            request.PageSize, 
+            request.Search);
         var result = await _mediator.Send(query);
 
         return result.Match(Ok, Problem);
@@ -65,11 +75,19 @@ public class ExerciseController : ApiController
     [HttpPost]
     public async Task<IActionResult> CreateExercise([FromBody] ExerciseCreateRequest request)
     {
+        var userIdClaim = User.FindFirst("id") ?? User.FindFirst("nameid");
+
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized("No se pudo obtener el UserId del token.");
+        }
+        
         var command = new CreateExerciseCommand(
             request.Name,
             request.MuscleType,
             request.Description,
-            request.Duration
+            request.Duration,
+            userId
         );
 
         var result = await _mediator.Send(command);

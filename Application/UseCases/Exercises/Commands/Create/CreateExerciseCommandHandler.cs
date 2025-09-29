@@ -22,7 +22,8 @@ public class CreateExerciseCommandHandler : IRequestHandler<CreateExerciseComman
             Name = command.Name,
             MuscleType = command.MuscleType,
             Description = command.Description,
-            Duration = command.Duration
+            Duration = command.Duration,
+            UserId = command.UserId 
         };
         
         await _repository.InsertAsync(exercise);

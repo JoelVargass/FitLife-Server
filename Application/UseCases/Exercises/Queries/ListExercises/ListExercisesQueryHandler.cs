@@ -18,9 +18,12 @@ public class ListExercisesQueryHandler : IRequestHandler<ListExercisesQuery, Err
     public async Task<ErrorOr<ListResult<ExerciseResult>>> Handle(ListExercisesQuery query,
         CancellationToken cancellationToken)
     {
-        var result = await _exerciseRepository.ListAsync(page: query.Page, pageSize: query.PageSize,
-            !string.IsNullOrEmpty(query.Name) ? c => c.Name.Contains(query.Name) : null);
-
+        var result = await _exerciseRepository.ListAsync(
+            page: query.Page,
+            pageSize: query.PageSize,
+            filter: c =>
+                c.UserId == query.UserId &&
+                (string.IsNullOrEmpty(query.Name) || c.Name.Contains(query.Name)));
         return ListResult<ExerciseResult>.From(result, result.Items.Select(c => c.ToResult()));
     }
 }
