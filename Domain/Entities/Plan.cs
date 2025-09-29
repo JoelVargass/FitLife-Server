@@ -10,7 +10,7 @@ public class Plan
     
     public required PhysicalCondition PhysicalCondition { get; set; }
     
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
     public User User { get; set; }
     public List<ExercisePlan> ExercisePlans { get; set; } = new();
     
