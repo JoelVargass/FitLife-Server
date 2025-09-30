@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-//using Domain.Common.Constants;
 using Domain.Entities;
 using Infrastructure.Services.Authentication;
 
@@ -11,170 +10,15 @@ public static class Seeder
     {
         public static async Task SeedAsync(DbContext context)
         {
-            /*
-            if (!await context.Set<Permission>().AnyAsync() &&
-                !await context.Set<Role>().AnyAsync())
-            {
-                // Permisos
-                var permissions = new List<Permission>
-                {
-                    new Permission { Name = PermissionsConstants.Users.Create, DisplayName = "Crear usuario" },
-                    new Permission { Name = PermissionsConstants.Users.Read, DisplayName = "Ver usuarios" },
-                    new Permission { Name = PermissionsConstants.Users.Update, DisplayName = "Actualizar usuario" },
-                    new Permission { Name = PermissionsConstants.Users.Delete, DisplayName = "Eliminar usuario" },
-
-                    new Permission { Name = PermissionsConstants.Roles.Create, DisplayName = "Crear rol" },
-                    new Permission { Name = PermissionsConstants.Roles.Read, DisplayName = "Ver roles" },
-                    new Permission { Name = PermissionsConstants.Roles.Update, DisplayName = "Actualizar rol" },
-                    new Permission { Name = PermissionsConstants.Roles.Delete, DisplayName = "Eliminar rol" },
-                    new Permission { Name = PermissionsConstants.Roles.UpdatePermissions, DisplayName = "Modificar permisos de rol" },
-
-                    new Permission { Name = PermissionsConstants.EducationalPrograms.Create, DisplayName = "Crear carreras" },
-                    new Permission { Name = PermissionsConstants.EducationalPrograms.Delete, DisplayName = "Eliminar carrera" },
-
-                    new Permission { Name = PermissionsConstants.Periods.Create, DisplayName = "Crear Cuatrimestres" },
-                    new Permission { Name = PermissionsConstants.Periods.Delete, DisplayName = "Eliminar cuatrimestres" },
-
-                    new Permission { Name = PermissionsConstants.Subjects.Create, DisplayName = "Crear Materias" },
-                    new Permission { Name = PermissionsConstants.Subjects.Delete, DisplayName = "Eliminar Materias" },
-
-                    new Permission { Name = PermissionsConstants.Groups.Read, DisplayName = "Ver Grupos" },
-                    new Permission { Name = PermissionsConstants.Groups.Create, DisplayName = "Crear Grupos" },
-                    new Permission { Name = PermissionsConstants.Groups.Delete, DisplayName = "Eliminar Grupos" },
-
-                    new Permission { Name = PermissionsConstants.Sessions.Read, DisplayName = "Ver sesiones de tutoría" },
-                    new Permission { Name = PermissionsConstants.Sessions.Request, DisplayName = "Solicitar tutoría" },
-                    new Permission { Name = PermissionsConstants.Sessions.Approve, DisplayName = "Aceptar sesión de tutoría" },
-                    new Permission { Name = PermissionsConstants.Sessions.Reject, DisplayName = "Rechazar sesión de tutoría"},
-                    new Permission { Name =PermissionsConstants.Sessions.Complete, DisplayName = "Completar sesión" },
-                    new Permission { Name = PermissionsConstants.Sessions.GenerateReports, DisplayName = "Generar reportes de tutoría"},
-
-                    new Permission { Name = PermissionsConstants.TutorsRequests.Request, DisplayName = "Solicitar ser tutor" },
-                    new Permission { Name = PermissionsConstants.TutorsRequests.Approved, DisplayName = "Aprobar solicitud de tutor" },
-
-                    new Permission { Name = PermissionsConstants.Events.Create, DisplayName = "Crear evento" },
-                };
-
-                await context.Set<Permission>().AddRangeAsync(permissions);
-                await context.SaveChangesAsync();
-
-                var permissionsIds = await context.Set<Permission>()
-                    .ToDictionaryAsync(p => p.Name, p => p.Id);
-
-                var roles = new List<Role>
-                {
-                    new() { Name = "Administrador", Description = "Acceso total al sistema" },
-                    new() { Name = "Estudiante", Description = "Acceso a tutorías y postulaciones" },
-                    new() { Name = "Tutor", Description = "Estudiante que brinda tutorías" }
-                };
-
-                await context.Set<Role>().AddRangeAsync(roles);
-                await context.SaveChangesAsync();
-
-                var rolesIds = roles.ToDictionary(r => r.Name, r => r.Id);
-
-                var rolePermissionsMapping = new Dictionary<string, List<string>>
-                {
-                    {
-                        "Administrador", new List<string>
-                        {
-                            PermissionsConstants.Users.Create,
-                            PermissionsConstants.Users.Read,
-                            PermissionsConstants.Users.Update,
-                            PermissionsConstants.Users.Delete,
-                            PermissionsConstants.Roles.Create,
-                            PermissionsConstants.Roles.Read,
-                            PermissionsConstants.Roles.Update,
-                            PermissionsConstants.Roles.Delete,
-                            PermissionsConstants.Roles.UpdatePermissions,
-                            PermissionsConstants.EducationalPrograms.Create,
-                            PermissionsConstants.EducationalPrograms.Delete,
-                            PermissionsConstants.Periods.Create,
-                            PermissionsConstants.Periods.Delete,
-                            PermissionsConstants.Groups.Read,
-                            PermissionsConstants.Groups.Create,
-                            PermissionsConstants.Groups.Delete,
-                            PermissionsConstants.Subjects.Create,
-                            PermissionsConstants.Subjects.Delete,
-                            PermissionsConstants.TutorsRequests.Approved,
-                            PermissionsConstants.TutorsRequests.Read,
-                            PermissionsConstants.Sessions.Create,
-                            PermissionsConstants.Sessions.GenerateReports,
-                        }
-                    },
-                    {
-                        "Estudiante", new List<string>
-                        {
-                            PermissionsConstants.Sessions.Read,
-                            PermissionsConstants.Sessions.Request,
-                            PermissionsConstants.TutorsRequests.Request
-                        }
-                    },
-                    {
-                        "Tutor", new List<string>
-                        {
-                            PermissionsConstants.Sessions.Read,
-                            PermissionsConstants.Sessions.Request,
-                            PermissionsConstants.Sessions.Approve,
-                            PermissionsConstants.Sessions.Reject,
-                            PermissionsConstants.Sessions.Complete,
-                            PermissionsConstants.Sessions.Update,
-                        }
-                    }
-                };
-
-                var rolePermissions = new List<RolePermission>();
-
-                foreach (var (roleName, perms) in rolePermissionsMapping)
-                {
-                    var roleId = rolesIds[roleName];
-                    foreach (var perm in perms)
-                    {
-                        if (permissionsIds.TryGetValue(perm, out var permissionId))
-                        {
-                            rolePermissions.Add(new RolePermission
-                            {
-                                RoleId = roleId,
-                                PermissionId = permissionId
-                            });
-                        }
-                    }
-                }
-
-                await context.Set<RolePermission>().AddRangeAsync(rolePermissions);
-                await context.SaveChangesAsync();
-*/
-
-
-            // Usuarios iniciales
+            // Seeder de usuarios (solo si no existen)
             if (!await context.Set<User>().AnyAsync())
             {
                 var users = new List<User>
                 {
-                    new()
-                    {
-                        Name = "Joel",
-                        FirstLastName = "Vargas",
-                        SecondLastName = "Pérez",
-                        Email = "jovap723@gmail.com",
-                        Password = "password"
-                    },
-                    new()
-                    {
-                        Name = "Celeste",
-                        FirstLastName = "Gonzalez",
-                        SecondLastName = "Cruz",
-                        Email = "23393205@utcancun.edu.mx",
-                        Password = "password"
-                    },
-                    new()
-                    {
-                        Name = "Renata",
-                        FirstLastName = "Cortés",
-                        SecondLastName = "Mancilla",
-                        Email = "23393204@utcancun.edu.mx",
-                        Password = "password"
-                    }
+                    new() { Id = Guid.NewGuid(), Name = "Joel", FirstLastName = "Vargas", SecondLastName = "Pérez", Email = "jovap723@gmail.com", Password = "password" },
+                    new() { Id = Guid.NewGuid(), Name = "Celeste", FirstLastName = "Gonzalez", SecondLastName = "Cruz", Email = "23393205@utcancun.edu.mx", Password = "password" },
+                    new() { Id = Guid.NewGuid(), Name = "Renata", FirstLastName = "Cortés", SecondLastName = "Mancilla", Email = "23393204@utcancun.edu.mx", Password = "password" },
+                    new() { Id = Guid.NewGuid(), Name = "Sergio Joel", FirstLastName = "Trujillo", SecondLastName = "Torres", Email = "sergio@gmail.com", Password = "password" }
                 };
 
                 var passwordService = new PasswordService();
@@ -184,6 +28,157 @@ public static class Seeder
                 }
 
                 await context.Set<User>().AddRangeAsync(users);
+                await context.SaveChangesAsync();
+            }
+
+            // Seeder de planes por defecto (si no existen)
+            if (!await context.Set<Plan>().AnyAsync(p => p.UserId == null))
+            {
+                // ------------------- PPL Routine -------------------
+                var pplPlan = new Plan
+                {
+                    Name = "PPL Routine",
+                    Description = "Push/Pull/Legs split - 3 días de entrenamiento",
+                    TypeOfTraining = TypeOfTraining.Strength,
+                    PhysicalCondition = PhysicalCondition.Intermediate,
+                    UserId = null,
+                    ExercisePlans = new List<ExercisePlan>()
+                };
+
+                var pushExercises = new List<Exercise>
+                {
+                    new() { Name = "Bench Press", MuscleType = MuscleType.Chest },
+                    new() { Name = "Overhead Press", MuscleType = MuscleType.Shoulders },
+                    new() { Name = "Tricep Pushdown", MuscleType = MuscleType.Triceps },
+                    new() { Name = "Incline Dumbbell Press", MuscleType = MuscleType.Chest },
+                    new() { Name = "Lateral Raises", MuscleType = MuscleType.Shoulders }
+                };
+
+                var pullExercises = new List<Exercise>
+                {
+                    new() { Name = "Pull-ups", MuscleType = MuscleType.Back },
+                    new() { Name = "Barbell Row", MuscleType = MuscleType.Back },
+                    new() { Name = "Bicep Curl", MuscleType = MuscleType.Biceps },
+                    new() { Name = "Face Pull", MuscleType = MuscleType.Back },
+                    new() { Name = "Hammer Curl", MuscleType = MuscleType.Biceps }
+                };
+
+                var legExercises = new List<Exercise>
+                {
+                    new() { Name = "Squat", MuscleType = MuscleType.Legs },
+                    new() { Name = "Leg Press", MuscleType = MuscleType.Legs },
+                    new() { Name = "Romanian Deadlift", MuscleType = MuscleType.Legs },
+                    new() { Name = "Calf Raises", MuscleType = MuscleType.Legs },
+                    new() { Name = "Lunges", MuscleType = MuscleType.Legs }
+                };
+
+                // Asignar días y series/reps
+                pplPlan.ExercisePlans.AddRange(pushExercises.Select(e => new ExercisePlan
+                {
+                    Exercise = e,
+                    Plan = pplPlan,
+                    DayOfWeek = DayOfWeek.Monday,
+                    Series = 4,
+                    Repetitions = 8
+                }));
+
+                pplPlan.ExercisePlans.AddRange(pullExercises.Select(e => new ExercisePlan
+                {
+                    Exercise = e,
+                    Plan = pplPlan,
+                    DayOfWeek = DayOfWeek.Wednesday,
+                    Series = 4,
+                    Repetitions = 8
+                }));
+
+                pplPlan.ExercisePlans.AddRange(legExercises.Select(e => new ExercisePlan
+                {
+                    Exercise = e,
+                    Plan = pplPlan,
+                    DayOfWeek = DayOfWeek.Friday,
+                    Series = 4,
+                    Repetitions = 10
+                }));
+
+                // ------------------- Arnold Split -------------------
+                var arnoldPlan = new Plan
+                {
+                    Name = "Arnold Split",
+                    Description = "Arnold Schwarzenegger 6-day split",
+                    TypeOfTraining = TypeOfTraining.Strength,
+                    PhysicalCondition = PhysicalCondition.Advance,
+                    UserId = null,
+                    ExercisePlans = new List<ExercisePlan>()
+                };
+
+                var chestBack = new List<Exercise>
+                {
+                    new() { Name = "Bench Press", MuscleType = MuscleType.Chest },
+                    new() { Name = "Incline Dumbbell Press", MuscleType = MuscleType.Chest },
+                    new() { Name = "Pull-ups", MuscleType = MuscleType.Back },
+                    new() { Name = "Barbell Row", MuscleType = MuscleType.Back },
+                    new() { Name = "Dumbbell Flyes", MuscleType = MuscleType.Chest }
+                };
+
+                var shouldersArms = new List<Exercise>
+                {
+                    new() { Name = "Overhead Press", MuscleType = MuscleType.Shoulders },
+                    new() { Name = "Lateral Raises", MuscleType = MuscleType.Shoulders },
+                    new() { Name = "Bicep Curl", MuscleType = MuscleType.Biceps },
+                    new() { Name = "Tricep Pushdown", MuscleType = MuscleType.Triceps },
+                    new() { Name = "Hammer Curl", MuscleType = MuscleType.Biceps }
+                };
+
+                var legsAbs = new List<Exercise>
+                {
+                    new() { Name = "Squat", MuscleType = MuscleType.Legs },
+                    new() { Name = "Leg Press", MuscleType = MuscleType.Legs },
+                    new() { Name = "Romanian Deadlift", MuscleType = MuscleType.Legs },
+                    new() { Name = "Lunges", MuscleType = MuscleType.Legs },
+                    new() { Name = "Crunches", MuscleType = MuscleType.Abs }
+                };
+
+                // Chest & Back → Lunes y Jueves
+                foreach (var day in new[] { DayOfWeek.Monday, DayOfWeek.Thursday })
+                {
+                    arnoldPlan.ExercisePlans.AddRange(chestBack.Select(e => new ExercisePlan
+                    {
+                        Exercise = e,
+                        Plan = arnoldPlan,
+                        DayOfWeek = day,
+                        Series = 4,
+                        Repetitions = e.MuscleType == MuscleType.Chest || e.MuscleType == MuscleType.Back ? 6 : 10
+                    }));
+                }
+
+                // Shoulders & Arms → Martes y Viernes
+                foreach (var day in new[] { DayOfWeek.Tuesday, DayOfWeek.Friday })
+                {
+                    arnoldPlan.ExercisePlans.AddRange(shouldersArms.Select(e => new ExercisePlan
+                    {
+                        Exercise = e,
+                        Plan = arnoldPlan,
+                        DayOfWeek = day,
+                        Series = 3,
+                        Repetitions = 10
+                    }));
+                }
+
+                // Legs & Abs → Miércoles y Sábado
+                foreach (var day in new[] { DayOfWeek.Wednesday, DayOfWeek.Saturday })
+                {
+                    arnoldPlan.ExercisePlans.AddRange(legsAbs.Select(e => new ExercisePlan
+                    {
+                        Exercise = e,
+                        Plan = arnoldPlan,
+                        DayOfWeek = day,
+                        Series = 4,
+                        Repetitions = e.MuscleType == MuscleType.Abs ? 15 : 10
+                    }));
+                }
+
+                // Insertar planes
+                await context.Set<Plan>().AddRangeAsync(pplPlan, arnoldPlan);
                 await context.SaveChangesAsync();
             }
         }

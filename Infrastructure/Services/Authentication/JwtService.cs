@@ -22,15 +22,12 @@ public class JwtService : ITokenService
     private readonly IConfiguration _config;
     private readonly AppDbContext _context;
     //private readonly IPermissionRepository _permissionRepository;
-/*
-    public JwtService(IRoleRepository roleRepository, IConfiguration config, AppDbContext context,
-        IPermissionRepository permissionRepository)
+
+    public JwtService( IConfiguration config, AppDbContext context)
     {
         _config = config;
         _context = context;
-        _permissionRepository = permissionRepository;
     }
-    */
 
     public async Task<string> GenerateTokenAsync(Domain.Entities.User user)
     {

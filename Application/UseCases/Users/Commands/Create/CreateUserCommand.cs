@@ -1,3 +1,4 @@
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
@@ -8,6 +9,9 @@ public record CreateUserCommand(
     string FirstLastName,
     string SecondLastName,
     string Email,
-    string Password
+    string Password,
+    Genre? Genre,
+    decimal? Weight,
+    decimal? Height
     //Guid RoleId
     ) : IRequest<ErrorOr<Created>>;

@@ -1,3 +1,4 @@
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
@@ -7,4 +8,8 @@ public record UpdateProfileCommand(
     Guid Id,
     string Name,
     string FirstLastName,
-    string? SecondLastName) : IRequest<ErrorOr<Updated>>;
+    string? SecondLastName,
+    Genre? Genre,
+    decimal? Weight,
+    decimal? Height
+    ) : IRequest<ErrorOr<Updated>>;

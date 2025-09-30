@@ -6,6 +6,7 @@ using Application.UseCases.Authentication.Commands.Register;
 using Application.UseCases.Authentication.Common;
 using Application.UseCases.Authentication.Queries.Login;
 using Domain.Common.Errors;
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,10 @@ public class AuthController(IMediator mediator, IAuthService authService, IToken
         string FirstLastName,
         string SecondLastName,
         string Email,
-        string Password
+        string Password,
+        Genre? Genre,
+        decimal? Weight,
+        decimal? Height
     );
 
     public record PasswordResetRequest(string Token, string Password, string ConfirmPassword);
@@ -38,8 +42,16 @@ public class AuthController(IMediator mediator, IAuthService authService, IToken
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(request.Name, request.FirstLastName, request.SecondLastName, request.Email, 
-            request.Password);
+        var command = new RegisterCommand(
+            request.Name, 
+            request.FirstLastName, 
+            request.SecondLastName, 
+            request.Email, 
+            request.Password,
+            request.Genre,
+            request.Weight,
+            request.Height
+            );
         var result = await mediator.Send(command);
 
         return result.Match(authResult =>

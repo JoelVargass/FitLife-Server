@@ -50,6 +50,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
             SecondLastName = command.SecondLastName,
             Email = email,
             Password = command.Password,
+            Genre = command.Genre,
+            Weight = command.Weight,
+            Height = command.Height
             //RoleId = devRole.Id
         };
 

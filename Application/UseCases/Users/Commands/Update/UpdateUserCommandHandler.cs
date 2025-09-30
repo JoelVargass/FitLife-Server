@@ -38,6 +38,9 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Error
         user.SecondLastName = command.SecondLastName;
         user.Email = command.Email;
         user.Password = _passwordService.HashPassword(user, command.Password);
+        user.Genre = command.Genre;
+        user.Weight = command.Weight;
+        user.Height = command.Height;
         //user.RoleId = command.RoleId;
         user.UpdateDate = DateTime.UtcNow;
 

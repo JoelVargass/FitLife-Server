@@ -25,6 +25,9 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         user.Name = request.Name;
         user.FirstLastName = request.FirstLastName;
         user.SecondLastName = request.SecondLastName;
+        user.Genre = request.Genre;
+        user.Weight = request.Weight;
+        user.Height = request.Height;
         
         await _userRepository.UpdateAsync(user);
 

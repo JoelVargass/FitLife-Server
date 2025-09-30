@@ -11,7 +11,10 @@ public static class UserExtensions
             user.Name,
             user.FirstLastName,
             user.SecondLastName,
-            user.Email
+            user.Email,
+            user.Genre,
+            user.Weight,
+            user.Height
             //RoleName: user.Role.Name,
             );
     }

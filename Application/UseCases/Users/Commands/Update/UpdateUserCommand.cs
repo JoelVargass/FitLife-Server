@@ -1,3 +1,4 @@
+using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
@@ -9,6 +10,9 @@ public record UpdateUserCommand(
     string FirstLastName,
     string SecondLastName,
     string Email,
-    string Password
+    string Password,
+    Genre? Genre,
+    decimal? Weight,
+    decimal? Height
     //Guid RoleId
     ) : IRequest<ErrorOr<Updated>>;
