@@ -29,4 +29,10 @@
       <Folder Include="UseCases\ExercisePlans\Commands\Update\" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Common\Templates\AccountRecoveryTemplate.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>
